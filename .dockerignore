@@ -1,0 +1,6 @@
+.env
+.git
+node_modules
+work/app-data
+outputs
+*.log

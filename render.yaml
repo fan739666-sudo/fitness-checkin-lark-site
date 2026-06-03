@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: fitness-checkin-lark-site
+    env: node
+    plan: free
+    buildCommand: npm install --omit=dev
+    startCommand: node server.js
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 4173
+      - key: STORAGE_MODE
+        value: lark
+      - key: LARK_SYNC_MODE
+        value: openapi
+      - key: APP_ACCESS_CODE
+        sync: false
+      - key: LARK_APP_ID
+        sync: false
+      - key: LARK_APP_SECRET
+        sync: false
+      - key: LARK_BASE_TOKEN
+        sync: false
+      - key: LARK_CHECKIN_TABLE_ID
+        sync: false
+      - key: LARK_WEIGHT_TABLE_ID
+        sync: false
+      - key: LARK_CHECKIN_PHOTO_FIELD_ID
+        sync: false
