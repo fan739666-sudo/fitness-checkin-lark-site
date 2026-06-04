@@ -350,6 +350,17 @@ function localDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+function feishuDateTime(date, time) {
+  const [year, month, day] = String(date).split("-").map(Number);
+  const [hour, minute] = String(time || "00:00").split(":").map(Number);
+  return Date.UTC(year, month - 1, day, (hour || 0) - 8, minute || 0, 0);
+}
+
+function feishuDateTimeFromInput(value) {
+  const [date, time = "00:00"] = String(value || "").replace("T", " ").split(" ");
+  return feishuDateTime(date, time.slice(0, 5));
+}
+
 function larkExec(args) {
   return new Promise((resolvePromise, reject) => {
     execFile("lark-cli", args, { encoding: "utf8", maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
@@ -377,7 +388,11 @@ async function writeCheckinToLark(record) {
     [fields.note]: record.note
   };
   if (config.larkSyncMode === "openapi") {
-    const created = await larkCreateRecord(config.checkinTableId, payload);
+    const created = await larkCreateRecord(config.checkinTableId, {
+      ...payload,
+      [fields.checkinDate]: feishuDateTime(record.date, "00:00"),
+      [fields.checkinTime]: feishuDateTime(record.date, record.time)
+    });
     return {
       created,
       attachment: null,
@@ -433,7 +448,10 @@ async function writeWeightToLark(record) {
     [fields.note]: record.note
   };
   if (config.larkSyncMode === "openapi") {
-    return larkCreateRecord(config.weightTableId, payload);
+    return larkCreateRecord(config.weightTableId, {
+      ...payload,
+      [fields.weightTime]: feishuDateTimeFromInput(record.measuredAt)
+    });
   }
 
   return larkExec([

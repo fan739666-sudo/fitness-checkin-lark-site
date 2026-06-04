@@ -21,8 +21,8 @@ export default {
         const attachment = await uploadCheckinPhoto(env, form.get("photo"));
         const payload = {
           [fields.member]: record.member,
-          [fields.checkinDate]: `${record.date} 00:00:00`,
-          [fields.checkinTime]: `${record.date} ${record.time}:00`,
+          [fields.checkinDate]: feishuDateTime(record.date, "00:00"),
+          [fields.checkinTime]: feishuDateTime(record.date, record.time),
           [fields.activity]: record.activity,
           [fields.duration]: record.duration,
           [fields.distance]: record.distance,
@@ -47,7 +47,7 @@ export default {
           [fields.month]: record.month,
           [fields.weightPeriod]: record.period,
           [fields.weightKg]: record.weightKg,
-          [fields.weightTime]: record.measuredAt.replace("T", " ") + ":00",
+          [fields.weightTime]: feishuDateTimeFromInput(record.measuredAt),
           [fields.note]: record.note
         };
         const created = await larkCreateRecord(env, env.LARK_WEIGHT_TABLE_ID, payload);
@@ -128,6 +128,17 @@ function numberOrNull(value) {
   if (value === "" || value === null || value === undefined) return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
+}
+
+function feishuDateTime(date, time) {
+  const [year, month, day] = String(date).split("-").map(Number);
+  const [hour, minute] = String(time || "00:00").split(":").map(Number);
+  return Date.UTC(year, month - 1, day, (hour || 0) - 8, minute || 0, 0);
+}
+
+function feishuDateTimeFromInput(value) {
+  const [date, time = "00:00"] = String(value || "").replace("T", " ").split(" ");
+  return feishuDateTime(date, time.slice(0, 5));
 }
 
 function larkFields(env) {
