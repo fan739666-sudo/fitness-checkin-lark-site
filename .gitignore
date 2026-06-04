@@ -2,6 +2,7 @@
 node_modules/
 work/app-data/
 work/github_deploy_key*
+.wrangler/
 outputs/
 *.log
 .DS_Store

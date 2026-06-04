@@ -358,7 +358,8 @@ function addDays(date, days) {
 }
 
 function localDate(date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const parts = dateParts(date);
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
 function textValue(value) {
@@ -384,5 +385,25 @@ function toLocalDateTimeString(value) {
 
 function localDateTime(date) {
   if (Number.isNaN(date.getTime())) return "";
-  return `${localDate(date)} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+  const parts = dateParts(date);
+  return `${parts.year}-${parts.month}-${parts.day} ${parts.hour}:${parts.minute}`;
+}
+
+function dateParts(date) {
+  const values = Object.fromEntries(new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  }).formatToParts(date).map((part) => [part.type, part.value]));
+  return {
+    year: values.year,
+    month: values.month,
+    day: values.day,
+    hour: values.hour,
+    minute: values.minute
+  };
 }
