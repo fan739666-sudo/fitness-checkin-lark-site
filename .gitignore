@@ -1,6 +1,7 @@
 .env
 node_modules/
 work/app-data/
+work/github_deploy_key*
 outputs/
 *.log
 .DS_Store

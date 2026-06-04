@@ -1,0 +1,29 @@
+{
+  "name": "fitness-checkin-lark-site",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-06-03",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "APP_ACCESS_CODE": "yd0603",
+    "LARK_BASE_TOKEN": "A7Kdb1bBfaNVzlsPADrcmCcLnGg",
+    "LARK_CHECKIN_TABLE_ID": "tbleDM5qmEYCYoRl",
+    "LARK_WEIGHT_TABLE_ID": "tblVInYw9lkiwLbN",
+    "LARK_CHECKIN_PHOTO_FIELD_ID": "fldtIwdAzo",
+    "LARK_FIELD_MEMBER": "成员",
+    "LARK_FIELD_CHECKIN_DATE": "打卡日期",
+    "LARK_FIELD_CHECKIN_TIME": "打卡时间",
+    "LARK_FIELD_ACTIVITY": "打卡形式",
+    "LARK_FIELD_DURATION": "运动时长_分钟",
+    "LARK_FIELD_DISTANCE": "运动距离_公里",
+    "LARK_FIELD_INTENSITY": "强度",
+    "LARK_FIELD_NOTE": "备注",
+    "LARK_FIELD_PHOTO": "打卡照片",
+    "LARK_FIELD_MONTH": "月份",
+    "LARK_FIELD_WEIGHT_PERIOD": "记录类型",
+    "LARK_FIELD_WEIGHT_KG": "体重_公斤",
+    "LARK_FIELD_WEIGHT_TIME": "测量时间"
+  }
+}

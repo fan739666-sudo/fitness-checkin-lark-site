@@ -70,7 +70,24 @@ LARK_CHECKIN_PHOTO_FIELD_ID=fldtIwdAzo
 
 飞书开放平台应用需要具备多维表格记录读取、记录创建等权限，并且这个应用要有权限访问 `运动打卡` 这张多维表格。
 
-注意：当前云端 OpenAPI 模式会稳定写入打卡和体重记录，并直接从飞书读取周报。照片上传在云端暂时保存在网站服务的上传目录；如果部署在免费容器，重启后本地上传文件可能丢失。长期生产使用建议下一步接对象存储，或继续补齐“照片上传到飞书附件字段”的云端实现。
+注意：当前 Node 云端 OpenAPI 模式会稳定写入打卡和体重记录，并直接从飞书读取周报。Render 等免费容器的本地上传目录重启后可能丢失；如果需要长期保存照片，建议使用 Cloudflare Workers 版本，或继续给 Node 版本接对象存储。
+
+## Cloudflare Workers 部署
+
+如果部署平台不方便绑定银行卡，可以用 Cloudflare Workers。项目已经包含：
+
+- `src/worker.js`
+- `wrangler.jsonc`
+
+需要把飞书应用凭据作为 Cloudflare secrets 设置：
+
+```bash
+npx wrangler secret put LARK_APP_ID
+npx wrangler secret put LARK_APP_SECRET
+npx wrangler deploy
+```
+
+Workers 版本会直接把打卡、照片和体重记录写入飞书，也会直接从飞书读取周报。
 
 ## 接入飞书多维表格
 
